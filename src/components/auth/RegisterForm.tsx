@@ -5,7 +5,7 @@ import {useState, useTransition} from "react";
 import {CardWrapper} from "@/components/auth/CardWrapper";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {RegisterSchema} from "@/../schemas";
+import {RegisterSchema} from "@/schemas";
 import {Input} from "@/components/ui/input";
 import {
   Form,
@@ -18,7 +18,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {FormError} from "@/components/FormError";
 import {FormSuccess} from "@/components/FormSuccess";
-import {Register} from "@/../actions/Register";
+import {Register} from "@/actions/Register";
 
 interface RegisterFormProps {}
 

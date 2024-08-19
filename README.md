@@ -1,1 +1,1 @@
-A Test project for learnig Next js Authentication.
+A Test project for learning Next js Authentication.
