@@ -5,7 +5,7 @@ import {useState, useTransition} from "react";
 import {CardWrapper} from "@/components/auth/CardWrapper";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {RegisterSchema} from "../../../schemas";
+import {ResetSchema} from "../../../schemas";
 import {Input} from "@/components/ui/input";
 import {
   Form,
@@ -18,62 +18,40 @@ import {
 import {Button} from "@/components/ui/button";
 import {FormError} from "@/components/FormError";
 import {FormSuccess} from "@/components/FormSuccess";
-import {Register} from "@/actions/Register";
+import {Reset} from "@/actions/Reset";
 
-interface RegisterFormProps {}
-
-export const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
+export const ResetForm: React.FunctionComponent = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
-      name: "",
       email: "",
-      password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof RegisterSchema>) {
+  function onSubmit(values: z.infer<typeof ResetSchema>) {
     setError("");
     setSuccess("");
     startTransition(async () => {
       try {
-        const result = await Register(values);
-        setError(result.error);
-        setSuccess(result.success);
+        const result = await Reset(values);
+        setError(result?.error);
+        setSuccess(result?.success);
       } catch (error) {}
     });
   }
 
   return (
     <CardWrapper
-      headerLabel="Create an Account"
-      backButtonLabel="Already have an account?"
+      headerLabel="Reset Password"
+      backButtonLabel="Back to login"
       backButtonHref="/auth/login"
-      showSocial
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({field}) => (
-                <FormItem>
-                  <FormLabel className="!text-gray-950">Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="John Doe"
-                      disabled={isPending}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="email"
@@ -92,29 +70,11 @@ export const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({field}) => (
-                <FormItem>
-                  <FormLabel className="!text-gray-950">Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="******"
-                      type="password"
-                      disabled={isPending}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button type="submit" className="w-full" disabled={isPending}>
-            Register
+            Send Reset Email
           </Button>
         </form>
       </Form>
